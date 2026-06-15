@@ -37,15 +37,36 @@ git init -b master
 >
 > The `-b master` flag names the starting branch `master`. Without it, the branch name depends on your Git version's default, which may be `master` or `main`. Naming it explicitly means the rest of this guide works the same on any machine.
 
-You can confirm it worked by listing hidden files — you should see `.git`:
+---
+
+## 2. Get your bearings with `pwd` and `ls`
+
+Before creating anything, get oriented. Two commands answer the two most basic questions in any terminal: *where am I?* and *what's here?*
+
+```
+pwd
+```
+
+`pwd` stands for **print working directory**. It shows the full path of the folder you're currently "in" — the path should end in `/git-practice`. The terminal is always sitting inside exactly one folder at a time, and commands like `ls`, `git`, and `echo` act on *that* folder unless you tell them otherwise.
+
+```
+ls
+```
+
+`ls` (**list**) shows the files in the current folder. Right now it prints nothing — the folder is empty apart from Git's machinery, which is hidden. To reveal hidden files, add the `-a` ("all") flag:
 
 ```
 ls -a
 ```
 
+Now you'll see the `.git` folder that `git init` created, confirming the repository is really there.
+
+> **Hidden files start with a dot**
+> On UNIX systems, any file or folder whose name begins with a `.` is hidden from a plain `ls` — a tidy convention for keeping configuration and behind-the-scenes machinery out of your way. `.git` is exactly that. Alongside it you'll also see `.` (shorthand for "this folder") and `..` ("the folder one level up") — two names that show up everywhere in the CLI.
+
 ---
 
-## 2. Create a file with `echo`
+## 3. Create a file with `echo`
 
 Instead of opening a text editor, you can create a small file straight from the command line. The `echo` command prints text, and the `>` operator redirects that text into a file instead of the screen:
 
@@ -58,7 +79,7 @@ echo "My name is John" > about.txt
 
 ---
 
-## 3. Check the file's contents with `cat`
+## 4. Check the file's contents with `cat`
 
 `cat` prints a file's contents to the screen. Use it to confirm the file says what you expect:
 
@@ -77,7 +98,7 @@ My name is John
 
 ---
 
-## 4. Commit the file to the repository
+## 5. Commit the file to the repository
 
 Right now Git can *see* `about.txt`, but it isn't tracking it yet. Saving a snapshot is a two-step move: **stage** the changes you want, then **commit** them.
 
@@ -113,7 +134,22 @@ git log --oneline
 
 ---
 
-## 5. Edit the file manually
+## 6. Confirm the commit landed
+
+You just saved your first snapshot — take two seconds to confirm it. Run `git status` again:
+
+```
+git status
+```
+
+A moment ago, `git status` listed `about.txt` as *untracked*. Now it reports **"nothing to commit, working tree clean."** That phrase means every change in your folder has been committed: Git and your files are perfectly in sync.
+
+> **"Working tree clean" is your home base**
+> The *working tree* is simply your folder of visible files. "Clean" means it matches the last commit exactly, with nothing unsaved. Whenever you're unsure whether you've captured all your work, `git status` is the command to run — and a clean tree is the safe state from which to branch, switch, or pull. Experienced users run `git status` almost as a reflex, dozens of times a day.
+
+---
+
+## 7. Edit the file manually
 
 Now change the file the normal way — open `about.txt` in any text editor (TextEdit, VS Code, whatever you like), replace **John** with **Joe**, and save. After saving, the file should read:
 
@@ -128,11 +164,11 @@ cat about.txt
 ```
 
 > **`echo` vs. editing by hand**
-> Step 2 used `echo` because it's fast for tiny one-liners. For anything real you'll edit files in an editor. Git doesn't care *how* a file changed — it only compares the file's current contents to the last committed snapshot. The tool you used to make the edit is irrelevant.
+> Step 3 used `echo` because it's fast for tiny one-liners. For anything real you'll edit files in an editor. Git doesn't care *how* a file changed — it only compares the file's current contents to the last committed snapshot. The tool you used to make the edit is irrelevant.
 
 ---
 
-## 6. See exactly what changed with `git diff`
+## 8. See exactly what changed with `git diff`
 
 Before you commit an edit, it's good practice to review precisely what you changed. That's what `git diff` is for:
 
@@ -170,7 +206,7 @@ index 1c2d3e4..5f6a7b8 100644
 
 ---
 
-## 7. Commit the edit
+## 9. Commit the edit
 
 Now that you've reviewed the change, stage and commit it:
 
@@ -190,7 +226,7 @@ git log --oneline
 
 ---
 
-## 8. Create a matching repository on GitHub (web UI)
+## 10. Create a matching repository on GitHub (web UI)
 
 So far everything lives only on your laptop. To back it up and collaborate, you need a copy on GitHub. Create the empty repo on the website:
 
@@ -208,7 +244,7 @@ After you click Create, GitHub shows a setup page with several commands. The sec
 
 ---
 
-## 9. Connect your local repo to GitHub (the remote)
+## 11. Connect your local repo to GitHub (the remote)
 
 You now have two separate repositories — one on your laptop, one (empty) on GitHub — and they don't know about each other yet. A **remote** is a named bookmark that points your local repo at the GitHub copy. The conventional name for it is `origin`.
 
@@ -233,7 +269,7 @@ You'll see two lines (a fetch URL and a push URL) both pointing at your new GitH
 
 ---
 
-## 10. Push your commits to GitHub
+## 12. Push your commits to GitHub
 
 Now send your local commits up to GitHub:
 
@@ -248,7 +284,7 @@ Refresh your repo's page on GitHub in the browser and you'll see `about.txt` and
 
 ---
 
-## 11. Create a new branch
+## 13. Create a new branch
 
 Real work doesn't happen directly on `master`. Instead, you make a **branch** — a parallel line of development where you can make changes safely. Create one and switch to it in a single command:
 
@@ -257,13 +293,34 @@ git switch -c add-greeting
 ```
 
 > **`switch -c` creates *and* moves you**
-> The `-c` flag means "create." `git switch -c add-greeting` creates a branch called `add-greeting` and immediately makes it your current branch. Any commits you make now go onto `add-greeting`, leaving `master` untouched. You can confirm which branch you're on at any time with `git branch` — the current one is marked with a `*`.
+> The `-c` flag means "create." `git switch -c add-greeting` creates a branch called `add-greeting` and immediately makes it your current branch. Any commits you make now go onto `add-greeting`, leaving `master` untouched. (You'll confirm this for yourself in the next step.)
 >
 > (You may see older guides use `git checkout -b` for this. `git switch` is the newer, clearer command that does the same thing.)
 
 ---
 
-## 12. Add a new file and commit it to the branch
+## 14. Double-check which branch you're on
+
+Creating the branch also *switched* you onto it — but rather than take that on faith, see it for yourself. This is a habit worth building before every commit. Ask Git to list the branches:
+
+```
+git branch
+```
+
+Git lists every branch and marks your current one with an asterisk `*`. You should see `* add-greeting`, with `master` sitting quietly beneath it.
+
+`git status` confirms the same thing in plain words — its first line now reads **"On branch add-greeting":**
+
+```
+git status
+```
+
+> **Always know which branch you're on**
+> Accidentally committing to the wrong branch is one of the most common beginner stumbles, and it's entirely avoidable: a two-second `git branch` or `git status` tells you exactly where your next commit will land. Many developers even configure their terminal prompt to display the current branch at all times, so the answer is always on screen.
+
+---
+
+## 15. Add a new file and commit it to the branch
 
 Create a second file on this branch:
 
@@ -283,7 +340,7 @@ git commit -m "Add greeting file"
 
 ---
 
-## 13. Push the branch to GitHub
+## 16. Push the branch to GitHub
 
 Publish your new branch so it exists on GitHub too:
 
@@ -296,7 +353,7 @@ git push -u origin add-greeting
 
 ---
 
-## 14. Open a pull request (web UI)
+## 17. Open a pull request (web UI)
 
 A **pull request** (PR) is a formal proposal to merge one branch into another — here, to merge `add-greeting` into `master`. It's where code review and discussion happen before changes become official. Open one on the website:
 
@@ -314,20 +371,20 @@ A **pull request** (PR) is a formal proposal to merge one branch into another �
 
 ---
 
-## 15. View the pull request (web UI)
+## 18. View the pull request (web UI)
 
 Creating the PR drops you straight onto its page. You can always get back to it later from the **Pull requests** tab at the top of your repo. The page has a few tabs worth knowing:
 
 - **Conversation** — the description, comments, review status, and the merge button.
 - **Commits** — the list of commits the PR would add (here, just "Add greeting file").
-- **Files changed** — the line-by-line diff. This is the same `+` / `-` view you saw with `git diff` in step 6, now rendered in the browser. It's where a reviewer reads and comments on the actual changes.
+- **Files changed** — the line-by-line diff. This is the same `+` / `-` view you saw with `git diff` in step 8, now rendered in the browser. It's where a reviewer reads and comments on the actual changes.
 
 > **The PR page is a living document**
 > If you push more commits to the `add-greeting` branch while the PR is open, they appear here automatically — the PR always reflects the latest state of the branch. That's why you open the PR early and keep working: reviewers see your updates as you go.
 
 ---
 
-## 16. Approve and merge the pull request (web UI)
+## 19. Approve and merge the pull request (web UI)
 
 In a team, a colleague reviews and **approves** your PR before it's merged. They'd do it like this:
 
@@ -355,7 +412,7 @@ Once the PR is approved (or, on a solo repo, whenever you're ready), merge it fr
 
 ---
 
-## 17. Bring your local `master` up to date
+## 20. Bring your local `master` up to date
 
 The merge happened on GitHub, so your laptop's `master` doesn't know about it yet. Switch back to `master` and pull the merged changes down:
 
@@ -373,9 +430,9 @@ git pull
 
 Once it's familiar, the everyday loop is short and rhythmic:
 
-1. `git switch -c my-change` — branch off `master`. *(command line)*
+1. `git switch -c my-change` — branch off `master`, then `git branch` to confirm where you are. *(command line)*
 2. Edit files. Use `git diff` to review. *(command line)*
-3. `git add` and `git commit` — snapshot your work. *(command line)*
+3. `git add`, `git commit`, then `git status` to confirm a clean tree. *(command line)*
 4. `git push -u origin my-change` — publish the branch. *(command line)*
 5. On **github.com**, click **Compare & pull request** to propose the change. *(web UI)*
 6. **Review**, **approve**, then **Squash and merge** and **Delete branch**. *(web UI)*
