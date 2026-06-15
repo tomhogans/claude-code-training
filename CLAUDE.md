@@ -1,4 +1,4 @@
-This is training material for learning to use Claude Code to build and deploy applications on the Cloudflare Workers platform.
+This is training material for learning to use Claude Code to build and deploy applications on the Cloudflare Workers platform, with Git and GitHub used for version control and continuous deployment.
 
 Topics:
 - Markdown
