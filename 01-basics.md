@@ -53,6 +53,22 @@ Three simple tools — measure sizes, sort them, show the last 10 — combined i
 
 The takeaway: the CLI feels intimidating at first, but its power comes from this idea of small programs you can snap together like Lego.
 
+### Why the CLI is a superpower for AI assistants
+
+There's a modern reason the CLI matters more than ever: it's the ideal way for an AI assistant like **Claude** or **ChatGPT** to operate your computer.
+
+Think about what a language model actually does — it reads text and writes text. That's its entire world. A graphical interface is the opposite of text: it's a picture made of pixels, with buttons, menus, and icons positioned at particular spots on the screen. For a human, that picture is friendly. For an AI, it's a wall. To click a button, the model would have to stare at a screenshot, work out *what* it's looking at, guess the button's coordinates, and move a virtual mouse there — slow, clumsy, and easy to get wrong, especially when a window moves or a layout changes.
+
+The CLI sidesteps all of that, because it speaks the AI's native language:
+
+- **Text in.** A command is just a line of text. The model can write one as easily as it writes a sentence — `git commit -m "Fix typo"` — with no coordinates, no clicking, no guessing where anything is on screen.
+- **Text out.** The result comes back as text too: the output, any error messages, a success or a failure. The model can *read* that result and decide what to do next. This back-and-forth — run a command, read the response, run the next one — is a tight feedback loop the AI can drive entirely on its own.
+- **Precise and repeatable.** A command means exactly one thing and does exactly the same thing every time. There's no ambiguity about which button was meant, and the exact steps can be reproduced, logged, and checked afterwards.
+
+There's a bonus, too: the CLI has been how programmers work for fifty years, so the internet is full of examples of these commands and explanations of what they do. An AI trained on all that text has effectively read the manual for thousands of command-line tools.
+
+This is exactly how **Claude Code** works. It lives in your terminal, and when you ask it to do something — create a file, make a commit, deploy your app — it writes the very same commands you're learning in this guide, runs them, reads the output, and reacts. Everything that makes the CLI powerful for *you* is the same thing that makes it powerful for the AI working alongside you.
+
 ---
 
 ## 2. Git and GitHub
